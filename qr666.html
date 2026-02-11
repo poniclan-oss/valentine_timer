@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Это ловушка</title>
+<style>
+body, html {
+    margin:0; padding:0; height:100%; overflow:hidden;
+    background:black; display:flex; justify-content:center; align-items:center;
+    font-family: monospace;
+}
+
+/* Двери контейнера */
+.door {
+    position:absolute;
+    top:0;
+    width:50%;
+    height:100%;
+    background: linear-gradient(to right, #111, #330000);
+    z-index:2;
+    transition: transform 2s ease-in-out;
+}
+.left-door { left:0; transform-origin:left; }
+.right-door { right:0; transform-origin:right; }
+
+/* Внутренность контейнера */
+.container-inside {
+    position:absolute;
+    top:0; left:0; width:100%; height:100%;
+    background:
+      linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
+      url('https://poniclan-oss.github.io/valentine_timer/images/bloody-wall.jpg') center/cover no-repeat;
+    display:flex; justify-content:center; align-items:center;
+    opacity:0; transition: opacity 2s ease-in-out;
+}
+.container-inside img {
+    width:60%; max-width:800px;
+    box-shadow:0 0 50px red, inset 0 0 80px darkred;
+    animation: qr-shake 1.2s infinite;
+}
+
+/* Мерцающее красное свечение */
+.red-glow {
+    position:absolute; top:0; left:0; width:100%; height:100%;
+    background: radial-gradient(circle,rgba(255,0,0,0.3),rgba(0,0,0,0.9));
+    animation: flicker 2s infinite; pointer-events:none;
+}
+
+/* Анимации */
+@keyframes flicker { 0%,19%,21%,23%,25%,54%,56%,100%{opacity:1;} 20%,22%,24%,55%{opacity:0.2;} }
+@keyframes qr-shake { 0%,100%{transform:translate(0,0);}20%{transform:translate(-5px,2px);}40%{transform:translate(3px,-3px);}60%{transform:translate(-2px,2px);}80%{transform:translate(2px,-1px);} }
+
+/* Стартовая кнопка */
+.start-btn {
+    position:absolute; z-index:3;
+    padding:20px 40px;
+    font-size:24px;
+    background:red;
+    color:white;
+    border:none;
+    cursor:pointer;
+    text-transform: uppercase;
+    letter-spacing:2px;
+}
+</style>
+</head>
+<body>
+
+<div class="door left-door"></div>
+<div class="door right-door"></div>
+
+<div class="container-inside">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://poniclan-oss.github.io/valentine_timer/valentine_timer_ios.html" alt="QR">
+    <div class="red-glow"></div>
+</div>
+
+<button class="start-btn" id="startBtn">НЕ ВХОДИТЬ</button>
+
+<script>
+document.getElementById('startBtn').addEventListener('click', () => {
+    // скрываем кнопку
+    const startBtn = document.getElementById('startBtn');
+    startBtn.style.display = 'none';
+
+    // открываем двери и показываем контейнер
+    document.querySelector('.left-door').style.transform = 'translateX(-100%)';
+    document.querySelector('.right-door').style.transform = 'translateX(100%)';
+    document.querySelector('.container-inside').style.opacity = 1;
+});
+</script>
+
+</body>
+</html>
